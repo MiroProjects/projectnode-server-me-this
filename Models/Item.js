@@ -4,10 +4,9 @@ var Item = function(category, name, price, weight, ingredients){
     this.price = price;
     this.weight = weight;
     this.ingredients = ingredients;
+    //Information for removed items
+    this.removed = false;
+    this.removedReason = "";
 };
-
-//Information for removed items
-Item.prototype.removed = false;
-Item.prototype.removedReason = "";
 
 module.exports = Item;
