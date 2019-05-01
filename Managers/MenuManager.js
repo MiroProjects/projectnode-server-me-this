@@ -15,15 +15,17 @@ var addItems = (menuItems, menu) => {
     });
 };
 
-var printMenu = (menu) => {
+var getMenuHtml = (menu) => {
+    var menuItems = "";
     menu.menuItems.forEach(menuItem => {
-        ItemManager.printItem(menuItem);
+       menuItems += ItemManager.getItemHtml(menuItem);
     });
+    return `<h1>Menu</h1>${menuItems}`;
 };
 
 module.exports = {
     createMenu,
     addItem,
     addItems,
-    printMenu
+    getMenuHtml
 };

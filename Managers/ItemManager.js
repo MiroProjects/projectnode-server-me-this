@@ -45,13 +45,23 @@ var markReturned = (item) => {
     item.removedReason = "";
 };
 
-var printItem = (item) => {
-    console.log(`Category: ${item.category}, Name: ${item.name}, Price: ${item.price}, Weight: ${item.weight}, Ingredients: ${item.ingredients}, Removed: ${item.removed}, Reason: ${item.removedReason}`);
+var getItemHtml = (item) => {
+    return `<div class='row'>
+            <div class='col-md-12'>
+            <p>Category: ${item.category}</p>
+            <p>Name: ${item.name}</p>
+            <p>Price: ${item.price}</p>
+            <p>Weight: ${item.weight}</p>
+            <p>Ingredients: ${item.ingredients}</p>
+            <p>Removed: ${item.removed}</p>
+            <p>Reason: ${item.removedReason}</p>
+            </div>
+            </div>`;
 };
 
 module.exports = {
     createItem,
-    printItem,
+    getItemHtml,
     markReturned,
     markRemoved
 }

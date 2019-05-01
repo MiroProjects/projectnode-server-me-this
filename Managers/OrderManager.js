@@ -42,10 +42,13 @@ var checkState = (state) => {
     return flag;
 };
 
-var printOrderItems = (order) => {
+var getOrderItemsHtml = (order) => {
+    var allItmesHtmlInOrder = "";
     order.items.forEach(item => {
-        ItemManager.printItem(item);
+        allItmesHtmlInOrder += ItemManager.getItemHtml(item);
     });
+
+    return `<h2>Order:</h2>${allItmesHtmlInOrder}`;
 }
 
 module.exports = {
@@ -54,5 +57,5 @@ module.exports = {
     addItems,
     calculatePrice,
     orderChangeState,
-    printOrderItems
+    getOrderItemsHtml
 }

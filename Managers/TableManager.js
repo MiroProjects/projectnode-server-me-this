@@ -39,15 +39,24 @@ var freeTable = (table) => {
     table.isFree = true;
 }
 
-var printAllTableOrders = (table) => {
+var getAllTableOrdersHtml = (table) => {
+    var allOrderItemsHtml = "";
     table.orders.forEach(order => {
-        console.log("-------------------");
-        OrderManager.printOrderItems(order);
+        allOrderItemsHtml += OrderManager.getOrderItemsHtml(order);
     });
+    return `<h1>Table: ${table.number}</h1>${allOrderItemsHtml}`;
 };
 
-var printTableInfo = (table) => {
-    console.log(`Table №: ${table.number}, Seats: ${table.seats}, Reserved: ${!table.isFree}, waiter: ${table.waiter}`);
+var getTableInfoHtml = (table) => {
+    return `<div class='col-md-3'"; 
+    style='text-align: center; border: solid #f0f2f4 2px; height: 209px'>
+            <p>Table №: ${table.number}</p>
+            <p>Seats: ${table.seats}</p>
+            <p>Reserved: ${!table.isFree}</p>
+            <p>Waiter: ${table.waiter}</p>
+            <a class="btn btn-light" href="tables/${table.number}" role="button">View</a>
+            <a class="btn btn-light" href="#" role="button">Update</a>
+            </div>`;
 };
 
 module.exports = {
@@ -57,6 +66,6 @@ module.exports = {
     addWaiter,
     reserveTable,
     freeTable,
-    printAllTableOrders,
-    printTableInfo
+    getAllTableOrdersHtml,
+    getTableInfoHtml
 };
