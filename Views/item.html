@@ -39,12 +39,13 @@
     var hidden = document.getElementById("hidden");
     check.addEventListener('change', (e) => {
         if (e.target.checked) {
-            var reson = prompt("Enter reason for removing this item", "Enter here");
+            var reason = prompt("Enter reason for removing this item", "Enter here");
             if (reason) {
                 hidden.value = reason;
+                alert(hidden.value);
             }
         }
-    })
+    });
 </script>
 </body>
 </html>

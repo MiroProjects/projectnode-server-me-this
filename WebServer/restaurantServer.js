@@ -1,13 +1,19 @@
 const http = require('http');
 const Request = require('./restaurantRequest');
 const Response = require('./restaurantResponse');
+var qs = require('querystring');
 
 const restaurantServer = function(){
     this.urlCollection = {};
+    this.postCollection = {};
 }
 
 restaurantServer.prototype.get = function(path, callback){
     this.urlCollection[path] = callback;
+}
+
+restaurantServer.prototype.post = function(path, callback){
+    this.postCollection[path] = callback;
 }
 
 restaurantServer.prototype.run = function (PORT, callback) {
@@ -24,13 +30,27 @@ restaurantServer.prototype.run = function (PORT, callback) {
         var requestReference = new Request(req);
         var responseReference = new Response(res);
 
-        for(var route in this.urlCollection){
-            if (this.urlCollection.hasOwnProperty(route)) {
-                var found = url.match(matchRegex(route));
-                if (found) {
-                    requestReference.args(found.slice(1));
-                    this.urlCollection[route](requestReference, responseReference);
-                    break;
+        if (req.method == "POST") {
+            var postDataCollection = "";
+            req.on('data', (chunk) => {
+                postDataCollection += chunk.toString();
+            });
+
+            req.on('end', () => {
+                var parsedObj = qs.parse(postDataCollection);
+                requestReference.body(parsedObj);
+                this.postCollection[url](requestReference, responseReference);
+            });    
+        }
+        else if(req.method == "GET"){
+            for(var route in this.urlCollection){
+                if (this.urlCollection.hasOwnProperty(route)) {
+                    var found = url.match(matchRegex(route));
+                    if (found) {
+                        requestReference.args(found.slice(1));
+                        this.urlCollection[route](requestReference, responseReference);
+                        break;
+                    }
                 }
             }
         }
