@@ -29,6 +29,10 @@ server.get('menu', (req, res) => {
     res.loadHtmlFile('menu.html', optionalHtml);
 });
 
+server.get('item', (req, res) => {
+    res.loadHtmlFile('item.html');
+});
+
 server.run(PORT, () => {
     console.log(`Server running on PORT: ${PORT}`);
 });
