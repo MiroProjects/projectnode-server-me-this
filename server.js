@@ -37,8 +37,10 @@ server.get('table-order/:id', (req, res) => {
 //GET
 server.get('save', (req, res) => {
     var orders = OrderManager.getAllOrders();
-    File.writeOrders(orders);
-    res.loadHtmlFile('home.html');
+    if (orders.length != 0) {
+        File.writeOrders(orders);
+        res.loadHtmlFile('save.html');
+    }
 });
 
 //GET

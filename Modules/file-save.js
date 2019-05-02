@@ -14,12 +14,15 @@ File.writeOrder = (order) => {
 };
 
 File.writeOrders = (orders) => {
+    var date = new Date();
+    var text = `Orders for: ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}\n`;
     var allOrders = "";
     orders.forEach(order => {
         allOrders += `Order: ${order.id}, Order state: ${order.state}, Order total pirce: ${order.totalPrice}, Order items: ${getAllOrderItems(order)}\n`;
     });
 
-    fs.appendFile("orders.txt", allOrders, function(err) {
+    text += allOrders;
+    fs.appendFile("orders.txt", text, function(err) {
         if(err) {
             return console.log(err);
         }
