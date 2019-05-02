@@ -10,6 +10,7 @@ var MenuManager = require('./Managers/MenuManager');
 var ItemManager = require('./Managers/ItemManager');
 var OrderManager = require('./Managers/OrderManager');
 var OrderState = require('./Enums/OrderState');
+var File = require('./Modules/file-save');
 
 //End points
 //GET
@@ -31,6 +32,13 @@ server.get('table-order/:id', (req, res) => {
     </script>`;
     optionalHtml += '</section></body></html>';
     res.loadHtmlFile('table-order.html', optionalHtml);
+});
+
+//GET
+server.get('save', (req, res) => {
+    var orders = OrderManager.getAllOrders();
+    File.writeOrders(orders);
+    res.loadHtmlFile('home.html');
 });
 
 //GET

@@ -87,6 +87,10 @@ var getOrderById = (id) => {
     });
 };
 
+var getAllOrders = () => {
+    return orders;
+};
+
 module.exports = {
     createOrder,
     addItem,
@@ -94,5 +98,6 @@ module.exports = {
     calculatePrice,
     orderChangeState,
     getOrderItemsHtml,
-    getOrderById
+    getOrderById,
+    getAllOrders
 }
