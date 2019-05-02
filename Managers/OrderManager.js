@@ -30,7 +30,7 @@ var calculatePrice = (order) => {
     var sum = 0;
 
     order.items.forEach(item => {
-        sum += item.price;
+        sum += parseInt(item.price);
     });
     return order.totalPrice = sum;
 };

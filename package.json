@@ -1,0 +1,23 @@
+{
+  "name": "projectnode-server-me-this",
+  "version": "1.0.0",
+  "description": "A software for managing all restaurant menues, items, orders, tables and waiters.",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MiroProjects/projectnode-server-me-this.git"
+  },
+  "keywords": [
+    "Restaurant"
+  ],
+  "author": "Miroslav Terziyski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MiroProjects/projectnode-server-me-this/issues"
+  },
+  "homepage": "https://github.com/MiroProjects/projectnode-server-me-this#readme"
+}

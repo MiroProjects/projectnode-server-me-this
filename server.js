@@ -53,7 +53,7 @@ server.post('waiter', (req, res) => {
     var table = Restaurant.getTableByNumber(tableNumber);
     var waiter = req.bodyCollection.waiter;
     TableManager.addWaiter(waiter, table);
-    res.loadHtmlFile('home.html');
+    res.loadHtmlFile('waiter.html');
 });
 
 //GET
@@ -63,13 +63,16 @@ server.get('save', (req, res) => {
         File.writeOrders(orders);
         res.loadHtmlFile('save.html');
     }
+    else{
+        res.loadHtmlFile('home.html');
+    }
 });
 
 //GET
 server.get('order-cancel/:id', (req, res) => {
     var order = OrderManager.getOrderById(req.args[0]);
     OrderManager.orderChangeState(OrderState.Canceled, order);
-    res.loadHtmlFile('order.html');
+    res.loadHtmlFile('order-state-update.html');
 });
 
 //GET
@@ -77,7 +80,7 @@ server.get('order-finish/:id', (req, res) => {
     var order = OrderManager.getOrderById(req.args[0]);
     OrderManager.orderChangeState(OrderState.Finished, order);
     OrderManager.calculatePrice(order);
-    res.loadHtmlFile('order.html');
+    res.loadHtmlFile('order-state-update.html');
 });
 
 //POST
@@ -130,7 +133,7 @@ server.post('item-remove-post', (req, res) => {
     var id = req.bodyCollection.id;
     var item = Restaurant.getItemById(id);
     ItemManager.markRemoved(item, reason);
-    res.loadHtmlFile('home.html');
+    res.loadHtmlFile('item-update.html');
 });
 
 //GET
@@ -160,6 +163,11 @@ server.post('item-create', (req, res) => {
 
     //Load the html
     res.loadHtmlFile('item-create.html');
+});
+
+//GET
+server.get('', (req, res) => {
+    res.loadHtmlFile('home.html');
 });
 
 server.run(PORT, () => {
