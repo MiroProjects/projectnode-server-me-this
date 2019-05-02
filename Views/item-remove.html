@@ -1,0 +1,28 @@
+<section class="jumbotron" style="width: 40%; margin: 20px auto; border: solid #99ddff 1px;">
+    <form action="http://localhost:3000/item-remove-post" method="POST" id="form">
+        <div class="form-group">
+            <label for="textarea">Please provide the reason for removing this item</label>
+            <textarea class="form-control" id="textarea" rows="3" name="reason"></textarea>
+        </div>
+        <input type="hidden" name="id" id="hidden">
+        <button type="submit" class="btn btn-primary btn-lg" style="margin-top: 20px;" id="submit" onclick="return check();">Enter</button>
+    </form>
+    </div>
+    <script>
+        var reason = document.getElementById("textarea");
+        var hidden = document.getElementById('hidden');
+        var form = document.getElementById('form');
+        var check = () => {
+            if (reason.value == "") {
+                alert("Please enter the reason!");
+                return false;
+            }
+        };
+
+        form.addEventListener('submit', () => {
+            hidden.value = window.location.pathname.split('/')[2];
+        });
+
+    </script>
+    </body>
+    </html>

@@ -1,0 +1,8 @@
+<section class="jumbotron" style="width: 40%; margin: 20px auto; border: solid #99ddff 1px;">
+    <form action="http://localhost:3000/order" method="POST" id="form">
+        <input type="hidden" name="number" id="hidden" value="">
+        <button type="submit" class="btn btn-primary btn-lg" style="margin-top: 20px;" id="submit"
+            onclick="return check()">Enter</button>
+        <div class="form-group">
+            <label for="select">Example multiple select</label>
+            <select multiple class="form-control" id="select" name="select">

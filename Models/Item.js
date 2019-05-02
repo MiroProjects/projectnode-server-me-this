@@ -1,4 +1,5 @@
-var Item = function(category, name, price, weight, ingredients){
+var Item = function(id, category, name, price, weight, ingredients){
+    this.id = id;
     this.category = category;
     this.name = name;
     this.price = price;

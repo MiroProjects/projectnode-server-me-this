@@ -1,6 +1,12 @@
 var Item = require('../Models/Item');
 var Category = require('../Enums/Category');
 
+var counter = 1;
+
+var incrementCounter = () => {
+   return counter++;
+};
+
 var createItem = (category, name, price, weight, ingredients) => {
     if (!ingredients) {
         console.log("Enter all the required information");
@@ -12,17 +18,17 @@ var createItem = (category, name, price, weight, ingredients) => {
         return null;
     }
 
-    if(!(Number.isFinite(price) && price > 0)){
+    if(!(Number.isFinite(price) || price > 0)){
         console.log("Enter a correct price!");
         return null;
     }
 
-    if(!(Number.isFinite(weight) && weight > 0)){
+    if(!(Number.isFinite(weight) || weight > 0)){
         console.log("Enter a correct weight!");
         return null;
     }
 
-    return new Item(category, name, price, weight, ingredients);
+    return new Item(incrementCounter(), category, name, price, weight, ingredients);
 }
 
 var checkCategory = (category) => {
@@ -46,17 +52,17 @@ var markReturned = (item) => {
 };
 
 var getItemHtml = (item) => {
-    return `<div class='row'>
-            <div class='col-md-12'>
-            <p>Category: ${item.category}</p>
-            <p>Name: ${item.name}</p>
-            <p>Price: ${item.price}</p>
-            <p>Weight: ${item.weight}</p>
-            <p>Ingredients: ${item.ingredients}</p>
-            <p>Removed: ${item.removed}</p>
-            <p>Reason: ${item.removedReason}</p>
-            </div>
-            </div>`;
+    return `<tr>
+            <td>${item.category}</td>
+            <td>${item.name}</td>
+            <td>${item.price}</td>
+            <td>${item.weight}</td>
+            <td>${item.ingredients}</td>
+            <td>${item.removed}</td>
+            <td>${item.removedReason}</td>
+            <td><a class="btn btn-light" href="item-remove/${item.id}" role="button">Remove</a></td>
+            <td><a class="btn btn-light" href="item-update/${item.id}" role="button">Return</a></td>
+            </tr>`;
 };
 
 module.exports = {

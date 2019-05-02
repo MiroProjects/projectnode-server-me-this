@@ -37,10 +37,10 @@ restaurantServer.prototype.run = function (PORT, callback) {
             });
 
             req.on('end', () => {
-                var parsedObj = qs.parse(postDataCollection);
+                var parsedObj = qs.parse(postDataCollection);  
                 requestReference.body(parsedObj);
                 this.postCollection[url](requestReference, responseReference);
-            });    
+            });
         }
         else if(req.method == "GET"){
             for(var route in this.urlCollection){

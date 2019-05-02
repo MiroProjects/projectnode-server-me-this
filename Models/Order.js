@@ -1,4 +1,5 @@
-var Order = function(){
+var Order = function(id){
+    this.id = id;
     this.items = [];
     this.state = null;
     this.totalPrice = 0;

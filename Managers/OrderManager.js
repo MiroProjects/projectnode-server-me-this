@@ -2,8 +2,18 @@ var Order = require('../Models/Order');
 var OrderState = require('../Enums/OrderState');
 var ItemManager = require('../Managers/ItemManager');
 
+var counter = 1;
+var orders = [];
+
+var incrementCounter = () => {
+   return counter++;
+};
+
 var createOrder = () => {
-    return new Order();
+    var order = new Order(incrementCounter());
+    order.state = OrderState.Made;
+    orders.push(order);
+    return order;
 };
 
 var addItem = (item, order) => {
@@ -48,8 +58,34 @@ var getOrderItemsHtml = (order) => {
         allItmesHtmlInOrder += ItemManager.getItemHtml(item);
     });
 
-    return `<h2>Order:</h2>${allItmesHtmlInOrder}`;
+    return `<h2>Order №${order.id} Status: ${order.state}</h2>
+    <a class="btn btn-light" href="order-cancel/${order.id}" role="button">Cancel</a>
+    <a class="btn btn-light" href="order-finish/${order.id}" role="button">Finish</a>
+    <table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Category</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Weight</th>
+            <th scope="col">Ingredients</th>
+            <th scope="col">Removed</th>
+            <th scope="col">Reason</th>
+            <th scope="col">Option</th>
+            <th scope="col">Option</th>
+        </tr>
+    </thead>
+    <tbody>
+    ${allItmesHtmlInOrder}
+    </tbody>
+    </table>`;
 }
+
+var getOrderById = (id) => {
+    return orders.find(function(order){
+        return order.id == id;
+    });
+};
 
 module.exports = {
     createOrder,
@@ -57,5 +93,6 @@ module.exports = {
     addItems,
     calculatePrice,
     orderChangeState,
-    getOrderItemsHtml
+    getOrderItemsHtml,
+    getOrderById
 }

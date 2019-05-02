@@ -45,4 +45,18 @@ Restaurant.getTableByNumber = (number) => {
     });
 }
 
+Restaurant.getItemById = (itemId) => {
+    return Restaurant.mainMenu.menuItems.find(function(item){
+        return item.id == itemId;
+    });
+};
+
+Restaurant.getAllMenuItemsHtml = () => {
+    var itemsHtml = '';
+    for (let index = 0; index < Restaurant.mainMenu.menuItems.length; index++) {
+        itemsHtml += `<option>${Restaurant.mainMenu.menuItems[index].id}</option>`; 
+    }
+    return itemsHtml;
+};
+
 module.exports = Restaurant;
