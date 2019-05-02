@@ -25,6 +25,14 @@ server.get('table-order/:id', (req, res) => {
     <script>
     var hidden = document.getElementById('hidden');
     var form = document.getElementById('form');
+    var select = document.getElementById('select');
+
+    var check = () => {
+        if(select.selectedIndex == -1){
+            alert("Select items for the order!");
+            return false;
+        }
+    };
 
     form.addEventListener('submit', () => {
         hidden.value = window.location.pathname.split('/')[2];
@@ -32,6 +40,20 @@ server.get('table-order/:id', (req, res) => {
     </script>`;
     optionalHtml += '</section></body></html>';
     res.loadHtmlFile('table-order.html', optionalHtml);
+});
+
+//GET
+server.get('table-waiter', (req, res) => {
+    res.loadHtmlFile('table-waiter.html');
+});
+
+//POST
+server.post('waiter', (req, res) => {
+    var tableNumber = req.bodyCollection.number;
+    var table = Restaurant.getTableByNumber(tableNumber);
+    var waiter = req.bodyCollection.waiter;
+    TableManager.addWaiter(waiter, table);
+    res.loadHtmlFile('home.html');
 });
 
 //GET
@@ -54,6 +76,7 @@ server.get('order-cancel/:id', (req, res) => {
 server.get('order-finish/:id', (req, res) => {
     var order = OrderManager.getOrderById(req.args[0]);
     OrderManager.orderChangeState(OrderState.Finished, order);
+    OrderManager.calculatePrice(order);
     res.loadHtmlFile('order.html');
 });
 

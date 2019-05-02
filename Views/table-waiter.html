@@ -1,0 +1,30 @@
+<section class="jumbotron" style="width: 40%; margin: 20px auto; border: solid #99ddff 1px;">
+    <form action="http://localhost:3000/waiter" method="POST" id="form">
+        <input type="hidden" name="number" id="hidden" value="">
+        <div class="form-group">
+            <label for="waiter">Enter waiter name</label>
+            <input type="text" class="form-control" id="waiter" placeholder="Waiter" name="waiter">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg" style="margin-top: 20px;" id="submit"
+            onclick="return check()">Enter</button>
+    </form>
+</section>
+<script>
+    var hidden = document.getElementById('hidden');
+    var form = document.getElementById('form');
+    var waiter = document.getElementById('waiter');
+
+    var check = () => {
+        if (waiter.value == "") {
+            alert("Add waiter!");
+            return false;
+        }
+    };
+
+    form.addEventListener('submit', () => {
+        hidden.value = window.location.pathname.split('/')[2];
+    });
+</script>
+</body>
+
+</html>

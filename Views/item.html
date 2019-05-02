@@ -42,6 +42,10 @@
             alert("Enter all required information!");
             return false;
         }
+        if(price.value <= 0 || weight.value <= 0){
+            alert("Enter valid price or/and weight!");
+            return false;
+        }
     };
 </script>
 </body>
