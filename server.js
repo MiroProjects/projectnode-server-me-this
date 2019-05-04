@@ -19,7 +19,7 @@ server.get('home', (req, res) => {
 });
 
 //GET
-server.get('table-order/:id', (req, res) => {
+server.get('order-create/:id', (req, res) => {
     var optionalHtml = `${Restaurant.getAllMenuItemsHtml()}</select></div></form>`;
     optionalHtml += `    
     <script>
@@ -39,21 +39,21 @@ server.get('table-order/:id', (req, res) => {
     });
     </script>`;
     optionalHtml += '</section></body></html>';
-    res.loadHtmlFile('table-order.html', optionalHtml);
+    res.loadHtmlFile('order-create-get.html', optionalHtml);
 });
 
 //GET
-server.get('table-waiter', (req, res) => {
-    res.loadHtmlFile('table-waiter.html');
+server.get('table-update-waiter', (req, res) => {
+    res.loadHtmlFile('table-update-get.html');
 });
 
 //POST
-server.post('waiter', (req, res) => {
+server.post('table-update-waiter', (req, res) => {
     var tableNumber = req.bodyCollection.number;
     var table = Restaurant.getTableByNumber(tableNumber);
     var waiter = req.bodyCollection.waiter;
     TableManager.addWaiter(waiter, table);
-    res.loadHtmlFile('waiter.html');
+    res.loadHtmlFile('table-update-post.html');
 });
 
 //GET
@@ -69,22 +69,22 @@ server.get('save', (req, res) => {
 });
 
 //GET
-server.get('order-cancel/:id', (req, res) => {
+server.get('order-update-cancel/:id', (req, res) => {
     var order = OrderManager.getOrderById(req.args[0]);
     OrderManager.orderChangeState(OrderState.Canceled, order);
-    res.loadHtmlFile('order-state-update.html');
+    res.loadHtmlFile('order-update-get.html');
 });
 
 //GET
-server.get('order-finish/:id', (req, res) => {
+server.get('order-update-finish/:id', (req, res) => {
     var order = OrderManager.getOrderById(req.args[0]);
     OrderManager.orderChangeState(OrderState.Finished, order);
     OrderManager.calculatePrice(order);
-    res.loadHtmlFile('order-state-update.html');
+    res.loadHtmlFile('order-update-get.html');
 });
 
 //POST
-server.post('order', (req, res) => {
+server.post('order-create', (req, res) => {
     var order = OrderManager.createOrder();
     var tableNumber = req.bodyCollection.number;
     var table = Restaurant.getTableByNumber(tableNumber);
@@ -100,52 +100,58 @@ server.post('order', (req, res) => {
         OrderManager.addItem(Restaurant.getItemById(select), order);
     }
     TableManager.addOrder(order, table);
-    res.loadHtmlFile('order.html');
+    res.loadHtmlFile('order-create-post.html');
 });
 
 //GET
-server.get('tables/:id', (req, res) => {
+server.get('table/:id', (req, res) => {
     var table = Restaurant.getTableByNumber(req.args[0]);
     var optionalHtml = TableManager.getAllTableOrdersHtml(table);
-    res.loadHtmlFile('table.html', optionalHtml);
+    res.loadHtmlFile('table-detail.html', optionalHtml);
 });
 
 //GET
 server.get('tables', (req, res) => {
     var optionalHtml = `${Restaurant.getAllTablesInfoHtml()}</body></html>`;
-    res.loadHtmlFile('tables.html', optionalHtml);
+    res.loadHtmlFile('table-list.html', optionalHtml);
 });
 
 //GET
 server.get('menu', (req, res) => {
     var optionalHtml = `${MenuManager.getMenuHtml(Restaurant.mainMenu)}</tbody></table></body></html>`;
-    res.loadHtmlFile('menu.html', optionalHtml);
+    res.loadHtmlFile('item-list.html', optionalHtml);
 });
 
 //GET
 server.get('item-remove/:id', (req, res) => {
-    res.loadHtmlFile('item-remove.html');
+    res.loadHtmlFile('item-remove-get.html');
 });
 
 //POST
-server.post('item-remove-post', (req, res) => {
+server.post('item-remove', (req, res) => {
     var reason = req.bodyCollection.reason;
     var id = req.bodyCollection.id;
     var item = Restaurant.getItemById(id);
     ItemManager.markRemoved(item, reason);
-    res.loadHtmlFile('item-update.html');
+    res.loadHtmlFile('item-remove-post.html');
 });
 
 //GET
 server.get('item-update/:id', (req, res) => {
-    var item = Restaurant.getItemById(req.args[0]);
+    res.loadHtmlFile('item-update-get.html');
+});
+
+//POST
+server.post('item-update', (req, res) => {
+    var id = req.bodyCollection.id;
+    var item = Restaurant.getItemById(id);
     ItemManager.markReturned(item);
-    res.loadHtmlFile('item-update.html');
+    res.loadHtmlFile('item-update-post.html');
 });
 
 //GET
-server.get('item', (req, res) => {
-    res.loadHtmlFile('item.html');
+server.get('item-create', (req, res) => {
+    res.loadHtmlFile('item-create-get.html');
 });
 
 //POST
@@ -162,7 +168,7 @@ server.post('item-create', (req, res) => {
     MenuManager.addItem(item, Restaurant.mainMenu);
 
     //Load the html
-    res.loadHtmlFile('item-create.html');
+    res.loadHtmlFile('item-create-post.html');
 });
 
 //GET

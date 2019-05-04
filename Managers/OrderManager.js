@@ -59,8 +59,8 @@ var getOrderItemsHtml = (order) => {
     });
 
     return `<h2>Order №${order.id} Status: ${order.state}</h2>
-    <a class="btn btn-light" href="order-cancel/${order.id}" role="button">Cancel</a>
-    <a class="btn btn-light" href="order-finish/${order.id}" role="button">Finish</a>
+    <a class="btn btn-light" href="order-update-cancel/${order.id}" role="button">Cancel</a>
+    <a class="btn btn-light" href="order-update-finish/${order.id}" role="button">Finish</a>
     <table class="table">
     <thead>
         <tr>
