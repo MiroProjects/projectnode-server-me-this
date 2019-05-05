@@ -1,5 +1,5 @@
 <section class="jumbotron" style="width: 40%; margin: 20px auto; border: solid #99ddff 1px;">
-<form action="http://localhost:3000/item-create" method="POST">
+<form action="http://localhost:3000/item/create" method="POST">
     <div class="form-group">
         <label for="select">Category</label>
         <select class="form-control" id="select" name="category">
@@ -17,7 +17,7 @@
     </div>
     <div class="form-group">
         <label for="price">Price</label>
-        <input type="number" class="form-control" id="price" placeholder="Price" name="price">
+        <input type="text" class="form-control" id="price" placeholder="Price" name="price">
     </div>
     <div class="form-group">
         <label for="weight">Weight</label>
@@ -42,8 +42,12 @@
             alert("Enter all required information!");
             return false;
         }
+        if (isNaN(price.value)) {
+            alert("The price has to be a valid number!");
+            return false;
+        }
         if(price.value <= 0 || weight.value <= 0){
-            alert("Enter valid price or/and weight!");
+            alert("Enter a non negative price or weight!");
             return false;
         }
     };

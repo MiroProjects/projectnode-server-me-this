@@ -60,8 +60,8 @@ var getItemHtml = (item) => {
             <td>${item.ingredients}</td>
             <td>${item.removed}</td>
             <td>${item.removedReason}</td>
-            <td><a class="btn btn-light" href="item-remove/${item.id}" role="button">Remove</a></td>
-            <td><a class="btn btn-light" href="item-update/${item.id}" role="button">Return</a></td>
+            <td><a class="btn btn-light" href="item/${item.id}/remove" role="button">Remove</a></td>
+            <td><a class="btn btn-light" href="item/${item.id}/return" role="button">Return</a></td>
             </tr>`;
 };
 

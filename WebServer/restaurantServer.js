@@ -17,6 +17,7 @@ restaurantServer.prototype.post = function(path, callback){
 }
 
 restaurantServer.prototype.run = function (PORT, callback) {
+    sortUrlCollection(this.urlCollection);
 
     this.serverInstance = http.createServer((req, res) => {
         //URL: /tables/2
@@ -39,20 +40,11 @@ restaurantServer.prototype.run = function (PORT, callback) {
             req.on('end', () => {
                 var parsedObj = qs.parse(postDataCollection);  
                 requestReference.body(parsedObj);
-                this.postCollection[url](requestReference, responseReference);
+                matchUrlResourse(this.postCollection, url, requestReference, responseReference);
             });
         }
         else if(req.method == "GET"){
-            for(var route in this.urlCollection){
-                if (this.urlCollection.hasOwnProperty(route)) {
-                    var found = url.match(matchRegex(route));
-                    if (found) {
-                        requestReference.args(found.slice(1));
-                        this.urlCollection[route](requestReference, responseReference);
-                        break;
-                    }
-                }
-            }
+            matchUrlResourse(this.urlCollection, url, requestReference, responseReference);
         }
     });
 
@@ -62,6 +54,27 @@ restaurantServer.prototype.run = function (PORT, callback) {
 
 var matchRegex = (route) => {
     return new RegExp(route.replace(/:[^\s/]+/g, '([\\w-]+)'));
+};
+
+var sortUrlCollection = (urlCollection) => {
+    const orderedUrlCollection = {};
+    var keys = Object.keys(urlCollection);
+    keys.sort((a, b) => b.length - a.length);
+    keys.forEach(key => orderedUrlCollection[key] = urlCollection[key]);
+    urlCollection = orderedUrlCollection;
+};
+
+var matchUrlResourse = (urlCollection, url, requestReference, responseReference) => {
+    for (var route in urlCollection) {
+        if (urlCollection.hasOwnProperty(route)) {
+            var found = url.match(matchRegex(route));
+            if (found) {
+                requestReference.args(found.slice(1));
+                urlCollection[route](requestReference, responseReference);
+                break;
+            }
+        }
+    }
 };
 
 module.exports = restaurantServer;

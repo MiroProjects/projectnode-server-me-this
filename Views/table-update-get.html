@@ -1,6 +1,5 @@
 <section class="jumbotron" style="width: 40%; margin: 20px auto; border: solid #99ddff 1px;">
-    <form action="http://localhost:3000/table-update-waiter" method="POST" id="form">
-        <input type="hidden" name="number" id="hidden" value="">
+    <form action="http://localhost:3000/" method="POST" id="form">
         <div class="form-group">
             <label for="waiter">Enter waiter's name</label>
             <input type="text" class="form-control" id="waiter" placeholder="Waiter" name="waiter">
@@ -10,7 +9,6 @@
     </form>
 </section>
 <script>
-    var hidden = document.getElementById('hidden');
     var form = document.getElementById('form');
     var waiter = document.getElementById('waiter');
 
@@ -22,7 +20,8 @@
     };
 
     form.addEventListener('submit', () => {
-        hidden.value = window.location.pathname.split('/')[2];
+        var id = window.location.pathname.split('/')[2];
+        form.action += `table/${id}/waiter`;
     });
 </script>
 </body>

@@ -30,7 +30,7 @@ var calculatePrice = (order) => {
     var sum = 0;
 
     order.items.forEach(item => {
-        sum += parseInt(item.price);
+        sum += parseFloat(item.price);
     });
     return order.totalPrice = sum;
 };
@@ -59,8 +59,8 @@ var getOrderItemsHtml = (order) => {
     });
 
     return `<h2>Order №${order.id} Status: ${order.state}</h2>
-    <a class="btn btn-light" href="order-update-cancel/${order.id}" role="button">Cancel</a>
-    <a class="btn btn-light" href="order-update-finish/${order.id}" role="button">Finish</a>
+    <a class="btn btn-light" href="order/${order.id}/cancel" role="button">Cancel</a>
+    <a class="btn btn-light" href="order/${order.id}/finish" role="button">Finish</a>
     <table class="table">
     <thead>
         <tr>
@@ -91,6 +91,16 @@ var getAllOrders = () => {
     return orders;
 };
 
+var areAllOrdersFinalized = (orders) => {
+    var areFinalized = true;
+     orders.forEach(order => {
+        if (order.state == OrderState.Made) {
+            areFinalized = false;
+        }
+    })
+    return areFinalized;
+};
+
 module.exports = {
     createOrder,
     addItem,
@@ -99,5 +109,6 @@ module.exports = {
     orderChangeState,
     getOrderItemsHtml,
     getOrderById,
-    getAllOrders
+    getAllOrders,
+    areAllOrdersFinalized
 }

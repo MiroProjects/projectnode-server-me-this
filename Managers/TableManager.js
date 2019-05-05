@@ -55,8 +55,8 @@ var getTableInfoHtml = (table) => {
             <p>Reserved: ${!table.isFree}</p>
             <p>Waiter: ${table.waiter}</p>
             <a class="btn btn-light" href="table/${table.number}" role="button">View</a>
-            <a class="btn btn-light" href="order-create/${table.number}" role="button">Add order</a>
-            <a class="btn btn-light" href="table-update-waiter/${table.number}" role="button">Add waiter</a>
+            <a class="btn btn-light" href="table/${table.number}/order/create" role="button">Add order</a>
+            <a class="btn btn-light" href="table/${table.number}/waiter" role="button">Add waiter</a>
             </div>`;
 };
 

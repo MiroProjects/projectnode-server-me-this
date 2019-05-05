@@ -1,16 +1,15 @@
 <section class="jumbotron" style="width: 40%; margin: 20px auto; border: solid #99ddff 1px;">
-    <form action="http://localhost:3000/item-update" method="POST" id="form">
+    <form action="http://localhost:3000/" method="POST" id="form">
         <div class="form-group">
             <label for="input">Please enter 'yes' for confirmation for returning the item!</label>
             <input type="text" class="form-control" id="input" placeholder="Enter 'yes'">
         </div>
-        <input type="hidden" name="id" id="hidden">
-        <button type="submit" class="btn btn-primary btn-lg" style="margin-top: 20px;" id="submit" onclick="return check();">Enter</button>
+        <button type="submit" class="btn btn-primary btn-lg" style="margin-top: 20px;" id="submit"
+            onclick="return check();">Enter</button>
     </form>
     </div>
     <script>
         var confirm = document.getElementById('input');
-        var hidden = document.getElementById('hidden');
         var form = document.getElementById('form');
         var check = () => {
             var trim = confirm.value.trim();
@@ -22,9 +21,9 @@
         };
 
         form.addEventListener('submit', () => {
-            hidden.value = window.location.pathname.split('/')[2];
+            var id = window.location.pathname.split('/')[2];
+            form.action += `item/${id}/return`;
         });
-
     </script>
     </body>
     </html>
