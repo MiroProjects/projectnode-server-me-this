@@ -1,5 +1,5 @@
-var Table = function(seats, number){
-    this.number = number;
+var Table = function(id, seats){
+    this.number = id;
     this.seats = seats;
     this.orders = [];
     this.waiter = "";

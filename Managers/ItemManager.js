@@ -2,6 +2,7 @@ var Item = require('../Models/Item');
 var Category = require('../Enums/Category');
 
 var counter = 1;
+var items = [];
 
 var incrementCounter = () => {
    return counter++;
@@ -28,7 +29,9 @@ var createItem = (category, name, price, weight, ingredients) => {
         return null;
     }
 
-    return new Item(incrementCounter(), category, name, price, weight, ingredients);
+    var item = new Item(incrementCounter(), category, name, price, weight, ingredients);
+    items.push(item);
+    return item;
 }
 
 var checkCategory = (category) => {
@@ -65,9 +68,27 @@ var getItemHtml = (item) => {
             </tr>`;
 };
 
+var getItemHtmlForOrder = (item) => {
+    return `<tr>
+    <td>${item.category}</td>
+    <td>${item.name}</td>
+    <td>${item.price}</td>
+    <td>${item.weight}</td>
+    <td>${item.ingredients}</td>
+    </tr>`;
+};
+
+var getItemById = (itemId) => {
+    return items.find(function(item){
+        return item.id == itemId;
+    });
+};
+
 module.exports = {
     createItem,
     getItemHtml,
     markReturned,
-    markRemoved
+    markRemoved,
+    getItemById,
+    getItemHtmlForOrder
 }

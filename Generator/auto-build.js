@@ -2,7 +2,8 @@ var TableManager = require('../Managers/TableManager');
 var MenuManager = require('../Managers/MenuManager');
 
 var Restaurant = {
-    tables : []
+    tables : [],
+    mainMenu : MenuManager.createMenu("Main Menu")
 };
 
 //Build all the tables in the current restaurant
@@ -23,40 +24,5 @@ var createAllTables = function () {
     Restaurant.tables.push(TableManager.createTable(12));
 }
 createAllTables();
-
-//Create menu
-Restaurant.mainMenu = MenuManager.createMenu("Main Menu");
-
-Restaurant.getAllTablesInfoHtml = () => {
-    var tablesHtml = `<div class="container-fluid"><div class="row">`;
-    for (let index = 0; index < Restaurant.tables.length; index++) {
-        if (index % 4 == 0 && index != 0) {
-            tablesHtml += "</div><div class='row'>";
-        }
-        tablesHtml += TableManager.getTableInfoHtml(Restaurant.tables[index]);
-    }
-    tablesHtml += `</div></div>`;
-    return tablesHtml;
-}
-
-Restaurant.getTableByNumber = (number) => {
-    return Restaurant.tables.find(function(table){
-        return table.number == number;
-    });
-}
-
-Restaurant.getItemById = (itemId) => {
-    return Restaurant.mainMenu.menuItems.find(function(item){
-        return item.id == itemId;
-    });
-};
-
-Restaurant.getAllMenuItemsHtml = () => {
-    var itemsHtml = '';
-    for (let index = 0; index < Restaurant.mainMenu.menuItems.length; index++) {
-        itemsHtml += `<option>${Restaurant.mainMenu.menuItems[index].id}</option>`; 
-    }
-    return itemsHtml;
-};
 
 module.exports = Restaurant;

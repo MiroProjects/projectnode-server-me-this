@@ -26,10 +26,32 @@ server.get('table/:id/waiter', (req, res) => {
 //POST
 server.post('table/:id/waiter', (req, res) => {
     var tableNumber = req.args[0];
-    var table = Restaurant.getTableByNumber(tableNumber);
+    var table = TableManager.getTableByNumber(tableNumber);
     var waiter = req.bodyCollection.waiter;
     TableManager.addWaiter(waiter, table);
     res.loadHtmlFile('table-update-post.html');
+});
+
+//GET
+server.get('table/:id/reserve', (req, res) => {
+    var tableNumber = req.args[0];
+    var table = TableManager.getTableByNumber(tableNumber);
+    table.isFree = false;
+    res.loadHtmlFile('table-reserve-get.html');
+});
+
+//GET
+server.get('table/:id/free', (req, res) => {
+    var tableNumber = req.args[0];
+    var table = TableManager.getTableByNumber(tableNumber);
+    var result = OrderManager.areAllOrdersFinalized(table.orders);
+    if (result) {
+        TableManager.freeTable(table);
+        res.loadHtmlFile('table-free-get.html');   
+    }
+    else{
+        res.loadHtmlFile('table-free-error.html'); 
+    }
 });
 
 //GET
@@ -67,7 +89,11 @@ server.get('order/:id/finish', (req, res) => {
 
 //GET
 server.get('table/:id/order/create', (req, res) => {
-    var optionalHtml = `${Restaurant.getAllMenuItemsHtml()}</select></div></form>`;
+    var optionalHtml = `${MenuManager.getAllMenuItemsHtml(Restaurant.mainMenu)}</select></div>
+    <button type="submit" class="btn btn-primary btn-lg" style="margin: 20px 0px;" id="submit"
+    onclick="return check()">Enter</button>
+    </form>`;
+    
     optionalHtml += `    
     <script>
     var hidden = document.getElementById('hidden');
@@ -93,17 +119,17 @@ server.get('table/:id/order/create', (req, res) => {
 server.post('order/create', (req, res) => {
     var order = OrderManager.createOrder();
     var tableNumber = req.bodyCollection.number;
-    var table = Restaurant.getTableByNumber(tableNumber);
+    var table = TableManager.getTableByNumber(tableNumber);
     var select = req.bodyCollection.select;
     if (Array.isArray(select)) {
         var items = [];
         select.forEach((el) => {
-            items.push(Restaurant.getItemById(el));
+            items.push(ItemManager.getItemById(el));
         });   
         OrderManager.addItems(items, order);
     }
     else{
-        OrderManager.addItem(Restaurant.getItemById(select), order);
+        OrderManager.addItem(ItemManager.getItemById(select), order);
     }
     TableManager.addOrder(order, table);
     res.loadHtmlFile('order-create-post.html');
@@ -111,14 +137,14 @@ server.post('order/create', (req, res) => {
 
 //GET
 server.get('table/:id', (req, res) => {
-    var table = Restaurant.getTableByNumber(req.args[0]);
+    var table = TableManager.getTableByNumber(req.args[0]);
     var optionalHtml = TableManager.getAllTableOrdersHtml(table);
     res.loadHtmlFile('table-detail.html', optionalHtml);
 });
 
 //GET
 server.get('tables', (req, res) => {
-    var optionalHtml = `${Restaurant.getAllTablesInfoHtml()}</body></html>`;
+    var optionalHtml = `${TableManager.getAllTablesInfoHtml()}</body></html>`;
     res.loadHtmlFile('table-list.html', optionalHtml);
 });
 
@@ -137,7 +163,7 @@ server.get('item/:id/remove', (req, res) => {
 server.post('item/:id/remove', (req, res) => {
     var reason = req.bodyCollection.reason;
     var id = req.args[0];
-    var item = Restaurant.getItemById(id);
+    var item = ItemManager.getItemById(id);
     ItemManager.markRemoved(item, reason);
     res.loadHtmlFile('item-remove-post.html');
 });
@@ -150,7 +176,7 @@ server.get('item/:id/return', (req, res) => {
 //POST
 server.post('item/:id/return', (req, res) => {
     var id = req.args[0];
-    var item = Restaurant.getItemById(id);
+    var item = ItemManager.getItemById(id);
     ItemManager.markReturned(item);
     res.loadHtmlFile('item-return-post.html');
 });

@@ -1,8 +1,17 @@
 var Menu = require('../Models/Menu');
 var ItemManager = require('../Managers/ItemManager');
 
+var counter = 1;
+var menus = [];
+
+var incrementCounter = () => {
+   return counter++;
+};
+
 var createMenu = (name) => {
-    return new Menu(name);
+    var menu = new Menu(incrementCounter(), name);
+    menus.push(menu);
+    return menu;
 };
 
 var addItem = (menuItem, menu) => {
@@ -23,9 +32,18 @@ var getMenuHtml = (menu) => {
     return `<h1>Menu</h1>${menuItems}`;
 };
 
+var getAllMenuItemsHtml = (menu) => {
+    var itemsHtml = '';
+    for (let index = 0; index < menu.menuItems.length; index++) {
+        itemsHtml += `<option>${menu.menuItems[index].id}</option>`; 
+    }
+    return itemsHtml;
+};
+
 module.exports = {
     createMenu,
     addItem,
     addItems,
-    getMenuHtml
+    getMenuHtml,
+    getAllMenuItemsHtml
 };

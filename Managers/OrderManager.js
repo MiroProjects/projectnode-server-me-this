@@ -55,12 +55,12 @@ var checkState = (state) => {
 var getOrderItemsHtml = (order) => {
     var allItmesHtmlInOrder = "";
     order.items.forEach(item => {
-        allItmesHtmlInOrder += ItemManager.getItemHtml(item);
+        allItmesHtmlInOrder += ItemManager.getItemHtmlForOrder(item);
     });
 
-    return `<h2>Order №${order.id} Status: ${order.state}</h2>
-    <a class="btn btn-light" href="order/${order.id}/cancel" role="button">Cancel</a>
-    <a class="btn btn-light" href="order/${order.id}/finish" role="button">Finish</a>
+    return `<hr style="border-top: 2px dotted #bfbfbf;"><h2>Order №${order.id}</h2><h2>Status: ${order.state}</h2>
+    <a class="btn btn-light" style="margin-bottom: 5px;" href="order/${order.id}/cancel" role="button">Cancel</a>
+    <a class="btn btn-light" style="margin-bottom: 5px;" href="order/${order.id}/finish" role="button">Finish</a>
     <table class="table">
     <thead>
         <tr>
@@ -69,10 +69,6 @@ var getOrderItemsHtml = (order) => {
             <th scope="col">Price</th>
             <th scope="col">Weight</th>
             <th scope="col">Ingredients</th>
-            <th scope="col">Removed</th>
-            <th scope="col">Reason</th>
-            <th scope="col">Option</th>
-            <th scope="col">Option</th>
         </tr>
     </thead>
     <tbody>
