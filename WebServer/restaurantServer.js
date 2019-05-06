@@ -71,10 +71,11 @@ var matchUrlResourse = (urlCollection, url, requestReference, responseReference)
             if (found) {
                 requestReference.args(found.slice(1));
                 urlCollection[route](requestReference, responseReference);
-                break;
+                return;
             }
         }
     }
+    urlCollection["error"](requestReference, responseReference);
 };
 
 module.exports = restaurantServer;

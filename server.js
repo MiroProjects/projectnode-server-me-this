@@ -19,6 +19,11 @@ server.get('home', (req, res) => {
 });
 
 //GET
+server.get('error', (req, res) => {
+    res.loadHtmlFile('error.html', "", true);
+});
+
+//GET
 server.get('table/:id/waiter', (req, res) => {
     res.loadHtmlFile('table-update-get.html');
 });
@@ -27,30 +32,45 @@ server.get('table/:id/waiter', (req, res) => {
 server.post('table/:id/waiter', (req, res) => {
     var tableNumber = req.args[0];
     var table = TableManager.getTableByNumber(tableNumber);
-    var waiter = req.bodyCollection.waiter;
-    TableManager.addWaiter(waiter, table);
-    res.loadHtmlFile('table-update-post.html');
+    if (table) {
+        var waiter = req.bodyCollection.waiter;
+        TableManager.addWaiter(waiter, table);
+        res.loadHtmlFile('table-update-post.html');   
+    }
+    else{
+        res.loadHtmlFile('error.html', "", true);
+    }
 });
 
 //GET
 server.get('table/:id/reserve', (req, res) => {
     var tableNumber = req.args[0];
     var table = TableManager.getTableByNumber(tableNumber);
-    table.isFree = false;
-    res.loadHtmlFile('table-reserve-get.html');
+    if (table) {
+        table.isFree = false;
+        res.loadHtmlFile('table-reserve-get.html');
+    }
+    else{
+        res.loadHtmlFile('error.html', "", true);
+    }
 });
 
 //GET
 server.get('table/:id/free', (req, res) => {
     var tableNumber = req.args[0];
     var table = TableManager.getTableByNumber(tableNumber);
-    var result = OrderManager.areAllOrdersFinalized(table.orders);
-    if (result) {
-        TableManager.freeTable(table);
-        res.loadHtmlFile('table-free-get.html');   
+    if (table) {
+        var result = OrderManager.areAllOrdersFinalized(table.orders);
+        if (result) {
+            TableManager.freeTable(table);
+            res.loadHtmlFile('table-free-get.html');   
+        }
+        else{
+            res.loadHtmlFile('table-free-error.html'); 
+        }   
     }
     else{
-        res.loadHtmlFile('table-free-error.html'); 
+        res.loadHtmlFile('error.html', "", true);
     }
 });
 
@@ -75,16 +95,26 @@ server.get('save', (req, res) => {
 //GET
 server.get('order/:id/cancel', (req, res) => {
     var order = OrderManager.getOrderById(req.args[0]);
-    OrderManager.orderChangeState(OrderState.Canceled, order);
-    res.loadHtmlFile('order-update-get.html');
+    if (order) {
+        OrderManager.orderChangeState(OrderState.Canceled, order);
+        res.loadHtmlFile('order-update-get.html');
+    }
+    else{
+        res.loadHtmlFile('error.html', "", true);
+    }
 });
 
 //GET
 server.get('order/:id/finish', (req, res) => {
     var order = OrderManager.getOrderById(req.args[0]);
-    OrderManager.orderChangeState(OrderState.Finished, order);
-    OrderManager.calculatePrice(order);
-    res.loadHtmlFile('order-update-get.html');
+    if (order) {
+        OrderManager.orderChangeState(OrderState.Finished, order);
+        OrderManager.calculatePrice(order);
+        res.loadHtmlFile('order-update-get.html');   
+    }
+    else{
+        res.loadHtmlFile('error.html', "", true);
+    }
 });
 
 //GET
@@ -138,8 +168,13 @@ server.post('order/create', (req, res) => {
 //GET
 server.get('table/:id', (req, res) => {
     var table = TableManager.getTableByNumber(req.args[0]);
-    var optionalHtml = TableManager.getAllTableOrdersHtml(table);
-    res.loadHtmlFile('table-detail.html', optionalHtml);
+    if (table) {
+        var optionalHtml = TableManager.getAllTableOrdersHtml(table);
+        res.loadHtmlFile('table-detail.html', optionalHtml);   
+    }
+    else{
+        res.loadHtmlFile('error.html', "", true);
+    }
 });
 
 //GET
@@ -161,11 +196,16 @@ server.get('item/:id/remove', (req, res) => {
 
 //POST
 server.post('item/:id/remove', (req, res) => {
-    var reason = req.bodyCollection.reason;
     var id = req.args[0];
     var item = ItemManager.getItemById(id);
-    ItemManager.markRemoved(item, reason);
-    res.loadHtmlFile('item-remove-post.html');
+    if (item) {
+        var reason = req.bodyCollection.reason;
+        ItemManager.markRemoved(item, reason);
+        res.loadHtmlFile('item-remove-post.html');
+    }
+    else{
+        res.loadHtmlFile('error.html', "", true);
+    }
 });
 
 //GET
@@ -177,8 +217,13 @@ server.get('item/:id/return', (req, res) => {
 server.post('item/:id/return', (req, res) => {
     var id = req.args[0];
     var item = ItemManager.getItemById(id);
-    ItemManager.markReturned(item);
-    res.loadHtmlFile('item-return-post.html');
+    if (item) {
+        ItemManager.markReturned(item);
+        res.loadHtmlFile('item-return-post.html');   
+    }
+    else{
+        res.loadHtmlFile('error.html', "", true);
+    }
 });
 
 //GET

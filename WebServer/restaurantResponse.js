@@ -15,7 +15,7 @@ Response.prototype.setResponseHeader = function(statusCode, responseObj){
     this.responseObject.writeHead(statusCode, responseObj);
 }
 
-Response.prototype.loadHtmlFile = function (file, optionalHtml) {
+Response.prototype.loadHtmlFile = function (file, optionalHtml, isErr = false) {
     fs.readFile(`${path}${baseFileToLoad}`, (err, baseData) => {
         if (!err) {
             fs.readFile(`${path}${file}`, (err, data) => {
@@ -24,16 +24,23 @@ Response.prototype.loadHtmlFile = function (file, optionalHtml) {
                     if (optionalHtml) {
                         baseData += optionalHtml;
                     }
-                    this.setResponseHeader(200, { "Content-Type": "text/html" });
+                    if (isErr) {
+                        this.setResponseHeader(404, { "Content-Type": "text/html" });
+                    }
+                    else{
+                        this.setResponseHeader(200, { "Content-Type": "text/html" });
+                    }
                     this.html(baseData);
                 }
                 else{
-                    this.html(JSON.stringify(err));
+                    this.setResponseHeader(404, { "Content-Type": "text/html" });
+                    this.html(`Error while loading the ${file} view file: ${JSON.stringify(err)}!`);
                 }
             });
         }
         else{
-            this.html(JSON.stringify(err));
+            this.setResponseHeader(404, { "Content-Type": "text/html" });
+            this.html(`Error while loading the ${baseFileToLoad} view file: ${JSON.stringify(err)}!`);
         }
     });
 }

@@ -1,18 +1,6 @@
 var fs = require('fs');
 var File = {};
 
-File.writeOrder = (order) => {
-    var orderStructure = `Order: ${order.id}, Order state: ${order.state}, Order total pirce: ${order.totalPrice}, Order items: ${getAllOrderItems(order)}`;
-
-    fs.appendFile("orders.txt", orderStructure, function(err) {
-        if(err) {
-            return console.log(err);
-        }
-    
-        console.log("The file was saved!");
-    });
-};
-
 File.writeOrders = (orders) => {
     var date = new Date();
     var text = `Orders for: ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}\n`;
