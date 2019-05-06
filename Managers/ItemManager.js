@@ -78,6 +78,19 @@ var getItemHtmlForOrder = (item) => {
     </tr>`;
 };
 
+var getItemHtmlForCreatingOrder = (item) => {
+    var result = JSON.stringify(item, ['id', 'category', 'name', 'price', 'weight']);
+    return `<tr>
+    <td>${item.category}</td>
+    <td>${item.name}</td>
+    <td>${item.price}</td>
+    <td>${item.weight}</td>
+    <td>${item.ingredients}</td>
+    <td><input type="number" id="quantity-${item.id}" style="width: 70px"></td>
+    <td><a class="btn btn-light" role="button" onclick='getItem(${result});'>Add item</a></td>
+    </tr>`;
+};
+
 var getItemById = (itemId) => {
     return items.find(function(item){
         return item.id == itemId;
@@ -90,5 +103,6 @@ module.exports = {
     markReturned,
     markRemoved,
     getItemById,
-    getItemHtmlForOrder
+    getItemHtmlForOrder,
+    getItemHtmlForCreatingOrder
 }

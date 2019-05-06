@@ -33,11 +33,11 @@ var getMenuHtml = (menu) => {
 };
 
 var getAllMenuItemsHtml = (menu) => {
-    var itemsHtml = '';
-    for (let index = 0; index < menu.menuItems.length; index++) {
-        itemsHtml += `<option>${menu.menuItems[index].id}</option>`; 
-    }
-    return itemsHtml;
+    var menuItems = "";
+    menu.menuItems.forEach(menuItem => {
+        menuItems += ItemManager.getItemHtmlForCreatingOrder(menuItem);
+    });
+    return menuItems;
 };
 
 module.exports = {

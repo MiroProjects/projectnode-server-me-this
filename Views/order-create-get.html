@@ -1,7 +1,19 @@
-<section class="jumbotron" style="width: 40%; margin: 20px auto; border: solid #99ddff 1px;">
+<section class="jumbotron" style="width: 80%; margin: 20px auto; border: solid #99ddff 1px;">
     <form action="http://localhost:3000/order/create" method="POST" id="form">
         <h2>Create new order</h2>
         <input type="hidden" name="number" id="hidden" value="">
+        <input type="hidden" name="items" id="hidden-items" value="">
         <div class="form-group">
-            <label for="select">Select the items for the order</label>
-            <select multiple class="form-control" id="select" name="select">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Category</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Weight</th>
+                        <th scope="col">Ingredients</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Option</th>
+                    </tr>
+                </thead>
+                <tbody>

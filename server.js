@@ -119,19 +119,22 @@ server.get('order/:id/finish', (req, res) => {
 
 //GET
 server.get('table/:id/order/create', (req, res) => {
-    var optionalHtml = `${MenuManager.getAllMenuItemsHtml(Restaurant.mainMenu)}</select></div>
+    var optionalHtml = `${MenuManager.getAllMenuItemsHtml(Restaurant.mainMenu)}</tbody></table></div>
     <button type="submit" class="btn btn-primary btn-lg" style="margin: 20px 0px;" id="submit"
-    onclick="return check()">Enter</button>
-    </form>`;
-    
-    optionalHtml += `    
+    onclick="return check()">Submit</button></form>
+    <a class="btn btn-light" style="margin-bottom: 5px;" href="//localhost:3000/tables" role="button">Cancel</a></section>
+    <h2>Added items for the order</h2>
+    <section class="jumbotron" style="width: 80%; margin: 20px auto; border: solid #99ddff 1px;" id="result">
+    </section>
     <script>
     var hidden = document.getElementById('hidden');
     var form = document.getElementById('form');
-    var select = document.getElementById('select');
+    var result = document.getElementById('result');
+    var hiddenItems = document.getElementById('hidden-items');
+    var items = [];
 
     var check = () => {
-        if(select.selectedIndex == -1){
+        if(items.length == 0){
             alert("Select items for the order!");
             return false;
         }
@@ -139,9 +142,21 @@ server.get('table/:id/order/create', (req, res) => {
 
     form.addEventListener('submit', () => {
         hidden.value = window.location.pathname.split('/')[2];
+        hiddenItems.value = items;
     });
-    </script>`;
-    optionalHtml += '</section></body></html>';
+
+    var getItem = (item) => {
+        var quantity = document.getElementById('quantity-'+item.id);
+        var count = 1;
+        if(quantity.value && quantity.value > 1){
+            count = quantity.value;
+        }
+        for (let index = 0; index < count; index++) {
+            items.push(item.id);
+            result.innerHTML += '<p class="lead">Category: <strong>'+item.category+'</strong> Name: <strong>'+item.name+'</strong> Price: <strong>'+item.price+'</strong> Weight: <strong>'+item.weight+'</strong></p>';
+        }
+    };
+    </script></body></html>`;
     res.loadHtmlFile('order-create-get.html', optionalHtml);
 });
 
@@ -149,18 +164,13 @@ server.get('table/:id/order/create', (req, res) => {
 server.post('order/create', (req, res) => {
     var order = OrderManager.createOrder();
     var tableNumber = req.bodyCollection.number;
+    var menuItems = req.bodyCollection.items.split(',');
     var table = TableManager.getTableByNumber(tableNumber);
-    var select = req.bodyCollection.select;
-    if (Array.isArray(select)) {
-        var items = [];
-        select.forEach((el) => {
-            items.push(ItemManager.getItemById(el));
-        });   
-        OrderManager.addItems(items, order);
-    }
-    else{
-        OrderManager.addItem(ItemManager.getItemById(select), order);
-    }
+    var items = [];
+    menuItems.forEach((item) => {
+        items.push(ItemManager.getItemById(item));
+    });
+    OrderManager.addItems(items, order);
     TableManager.addOrder(order, table);
     res.loadHtmlFile('order-create-post.html');
 });
