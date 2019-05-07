@@ -132,6 +132,7 @@ server.get('table/:id/order/create', (req, res) => {
     var result = document.getElementById('result');
     var hiddenItems = document.getElementById('hidden-items');
     var items = [];
+    var idCount = 0;
 
     var check = () => {
         if(items.length == 0){
@@ -145,6 +146,21 @@ server.get('table/:id/order/create', (req, res) => {
         hiddenItems.value = items;
     });
 
+    var removeItem = (paragraph) => {
+        paragraph.style.textDecoration = 'line-through';
+    };
+
+    var disableButton = (button) => {
+        button.disabled = true;
+    };
+
+    var removeItemFromArray = (itemId) => {
+        var index = items.indexOf(itemId);
+        if (index > -1) {
+            items.splice(index, 1);
+        }
+    };
+
     var getItem = (item) => {
         var quantity = document.getElementById('quantity-'+item.id);
         var count = 1;
@@ -153,7 +169,8 @@ server.get('table/:id/order/create', (req, res) => {
         }
         for (let index = 0; index < count; index++) {
             items.push(item.id);
-            result.innerHTML += '<p class="lead">Category: <strong>'+item.category+'</strong> Name: <strong>'+item.name+'</strong> Price: <strong>'+item.price+'</strong> Weight: <strong>'+item.weight+'</strong></p>';
+            result.innerHTML += '<p class="lead" id="p'+idCount+'">Category: <strong>'+item.category+'</strong> Name: <strong>'+item.name+'</strong> Price: <strong>'+item.price+'</strong> Weight: <strong>'+item.weight+'</strong><button type="button" class="btn btn-danger" style="margin-left:5px;" id="btn'+idCount+'" onclick="removeItemFromArray('+item.id+');removeItem(p'+idCount+');disableButton(btn'+idCount+');">X</button></p>';
+            idCount++;
         }
     };
     </script></body></html>`;
