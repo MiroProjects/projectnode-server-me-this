@@ -10,7 +10,6 @@ var MenuManager = require('./Managers/MenuManager');
 var ItemManager = require('./Managers/ItemManager');
 var OrderManager = require('./Managers/OrderManager');
 var OrderState = require('./Enums/OrderState');
-var File = require('./Modules/file-save');
 
 //End points
 //GET
@@ -80,7 +79,8 @@ server.get('save', (req, res) => {
     if (orders.length != 0) {
         var result = OrderManager.areAllOrdersFinalized(orders);
         if(result){
-            File.writeOrders(orders);
+            Restaurant.database.insertCollection(orders, Restaurant.dbTable);
+            Restaurant.database.flush(Restaurant.dbTable);
             res.loadHtmlFile('save.html');
         }
         else{

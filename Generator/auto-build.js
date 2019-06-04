@@ -1,9 +1,11 @@
 var TableManager = require('../Managers/TableManager');
 var MenuManager = require('../Managers/MenuManager');
+var Database = require('../Modules/database_script');
 
 var Restaurant = {
     tables : [],
-    mainMenu : MenuManager.createMenu("Main Menu")
+    mainMenu : MenuManager.createMenu("Main Menu"),
+    database : Database.newDatabase("RestaurantDb")
 };
 
 //Build all the tables in the current restaurant
@@ -24,5 +26,10 @@ var createAllTables = function () {
     Restaurant.tables.push(TableManager.createTable(12));
 }
 createAllTables();
+
+var createDbTable = function() {
+    Restaurant.dbTable = Database.newTable("Orders", Restaurant.database);
+};
+createDbTable();
 
 module.exports = Restaurant;
